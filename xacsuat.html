@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathX - Ôn Tập Xác Suất 11</title>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* CSS tạo hiệu ứng lật thẻ (Flip Card) mượt mà cho phần Lý thuyết */
+        .perspective { perspective: 1000px; }
+        .flip-card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-card-flipped { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .flip-card-back { transform: rotateY(180deg); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- 1. THANH ĐIỀU HƯỚNG (NAVIGATION BAR) -->
+    <header class="bg-indigo-600 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-2 cursor-pointer" onclick="switchTab('home')">
+                    <i class="fa-solid fa-calculator text-2xl text-amber-400"></i>
+                    <span class="font-bold text-xl tracking-tight">MathX <span class="text-indigo-200 font-normal text-sm">Xác Suất 11</span></span>
+                </div>
+                <!-- Desktop Navigation Tabs -->
+                <nav class="hidden md:flex space-x-2">
+                    <button id="nav-home" onclick="switchTab('home')" class="px-3 py-2 rounded-md text-sm font-medium transition-colors bg-indigo-700 text-white">Trang chủ</button>
+                    <button id="nav-theory" onclick="switchTab('theory')" class="px-3 py-2 rounded-md text-sm font-medium transition-colors text-indigo-100 hover:bg-indigo-500 hover:text-white">Lý Thuyết & Công Thức</button>
+                    <button id="nav-examples" onclick="switchTab('examples')" class="px-3 py-2 rounded-md text-sm font-medium transition-colors text-indigo-100 hover:bg-indigo-500 hover:text-white">Ví Dụ Minh Họa</button>
+                    <button id="nav-quiz" onclick="switchTab('quiz')" class="px-3 py-2 rounded-md text-sm font-medium transition-colors text-indigo-100 hover:bg-indigo-500 hover:text-white">Luyện Tập Trắc Nghiệm</button>
+                </nav>
+                <!-- Mobile Navigation Button -->
+                <div class="md:hidden">
+                    <button onclick="toggleMobileMenu()" class="text-white hover:text-indigo-200 focus:outline-none">
+                        <i id="menu-icon" class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-indigo-700 px-2 pt-2 pb-3 space-y-1 border-t border-indigo-500">
+            <button onclick="switchTab('home'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white bg-indigo-800">Trang chủ</button>
+            <button onclick="switchTab('theory'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-indigo-100 hover:bg-indigo-600 hover:text-white">Lý Thuyết & Công Thức</button>
+            <button onclick="switchTab('examples'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-indigo-100 hover:bg-indigo-600 hover:text-white">Ví Dụ Minh Họa</button>
+            <button onclick="switchTab('quiz'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-indigo-100 hover:bg-indigo-600 hover:text-white">Luyện Tập Trắc Nghiệm</button>
+        </div>
+    </header>
+
+    <!-- MAIN APP CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ==================== TAB 1: TRANG CHỦ ==================== -->
+        <section id="tab-home" class="space-y-8 animate-fadeIn">
+            <!-- Hero Greeting -->
+            <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+                <div class="relative z-10 max-w-2xl">
+                    <h1 class="text-3xl sm:text-4xl font-bold mb-4">Chào mừng bạn đến với Đấu trường Xác Suất! 👋</h1>
+                    <p class="text-indigo-100 text-lg mb-6">Làm chủ các quy tắc đếm cốt lõi, chinh phục các bài toán xác suất cổ điển và tránh bẫy sai lầm chỉ trong một trang ôn tập thông minh.</p>
+                    <button onclick="switchTab('theory')" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-6 py-3 rounded-lg shadow-md transition-all inline-flex items-center gap-2 group">
+                        Bắt đầu ôn tập ngay 
+                        <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                    </button>
+                </div>
+                <div class="absolute right-0 bottom-0 top-0 opacity-10 pointer-events-none hidden lg:block">
+                    <i class="fa-solid fa-chart-pie text-[250px] translate-y-10 translate-x-10"></i>
+                </div>
+            </div>
+
+            <!-- Mindmap Summary Cards -->
+            <div>
+                <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-sitemap text-indigo-600"></i> Sơ đồ tư duy tiêu điểm trọng tâm
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold mb-3"><i class="fa-solid fa-list-ol"></i></div>
+                        <h3 class="font-bold text-slate-900 mb-1">Quy tắc đếm cơ bản</h3>
+                        <p class="text-sm text-slate-500">Phân biệt và áp dụng chuẩn xác Quy tắc cộng (HOẶC) và Quy tắc nhân (VÀ).</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                        <div class="w-10 h-10 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center font-bold mb-3"><i class="fa-solid fa-percent"></i></div>
+                        <h3 class="font-bold text-slate-900 mb-1">Xác suất cổ điển</h3>
+                        <p class="text-sm text-slate-500">Tỷ lệ số phần tử biến cố trên tổng số phần tử không gian mẫu thử.</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                        <div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center font-bold mb-3"><i class="fa-solid fa-layer-group"></i></div>
+                        <h3 class="font-bold text-slate-900 mb-1">Tổ hợp trong Xác suất</h3>
+                        <p class="text-sm text-slate-500">Kỹ thuật rút đồng thời nhiều phần tử mà không quan trọng thứ tự sắp xếp.</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                        <div class="w-10 h-10 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center font-bold mb-3"><i class="fa-solid fa-bolt"></i></div>
+                        <h3 class="font-bold text-slate-900 mb-1">Biến cố độc lập</h3>
+                        <p class="text-sm text-slate-500">Quy tắc nhân áp dụng khi hai hành động không ảnh hưởng đến xác suất của nhau.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB 2: LÝ THUYẾT & CÔNG THỨC ==================== -->
+        <section id="tab-theory" class="hidden space-y-6 animate-fadeIn">
+            <div class="text-center max-w-xl mx-auto mb-6">
+                <h2 class="text-2xl font-bold text-slate-900">Thẻ ghi nhớ công thức thông minh</h2>
+                <p class="text-slate-500 text-sm mt-1">Bấm vào từng thẻ bên dưới để lật mặt sau và khám phá từ khóa cốt lõi cốt tử để giải bài tập!</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <!-- Card 1: Quy tắc cộng -->
+                <div class="perspective h-48 cursor-pointer" onclick="flipCard(this)">
+                    <div class="flip-card-inner relative w-full h-full text-center rounded-xl shadow-sm border border-slate-200 bg-white">
+                        <div class="flip-card-front absolute inset-0 flex flex-col justify-center items-center p-6 bg-white rounded-xl">
+                            <span class="text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full text-xs font-semibold mb-2">Quy tắc đếm</span>
+                            <h3 class="text-lg font-bold text-slate-900">Quy tắc cộng</h3>
+                            <p class="text-slate-400 text-xs mt-2"><i class="fa-solid fa-rotate"></i> Bấm để xem từ khóa bí mật</p>
+                        </div>
